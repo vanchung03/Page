@@ -3,132 +3,822 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chung Văn | Trang Cá Nhân</title>
+  <title>Chung Văn | Backend Developer</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
+    
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --accent-color: #f093fb;
+      --text-color: #333;
+      --text-light: #666;
+      --bg-light: #f8fafc;
+      --white: #ffffff;
+      --shadow: 0 10px 30px rgba(0,0,0,0.1);
+      --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       line-height: 1.6;
-      background-color: #f0f4f8;
-      color: #333;
+      color: var(--text-color);
+      overflow-x: hidden;
     }
-
-    .container {
-      width: 90%;
-      max-width: 800px;
-      margin: auto;
-      padding: 40px 0;
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
     }
-
-    header {
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      color: white;
+    
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 1rem 0;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: var(--shadow);
+    }
+    
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary-color);
+    }
+    
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 4px;
+    }
+    
+    .mobile-menu span {
+      width: 25px;
+      height: 3px;
+      background: var(--text-color);
+      transition: 0.3s;
+    }
+    
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 60px 20px;
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
     }
-
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.1)" points="0,1000 1000,0 1000,1000"/></svg>');
+      background-size: cover;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeInUp 1s ease-out;
+    }
+    
     .avatar {
-      width: 150px;
-      height: 150px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
-      border: 5px solid white;
-      margin-bottom: 20px;
+      border: 8px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 2rem;
       object-fit: cover;
+      animation: float 3s ease-in-out infinite;
+      backdrop-filter: blur(5px);
     }
-
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    .hero .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    
+    .hero .description {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      opacity: 0.8;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
     .btn {
       display: inline-block;
-      background-color: white;
-      color: #0077cc;
-      padding: 10px 20px;
+      padding: 12px 30px;
       text-decoration: none;
-      border-radius: 30px;
-      margin-top: 20px;
-      transition: background 0.3s;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-
+    
+    .btn-primary {
+      background: var(--white);
+      color: var(--primary-color);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid var(--white);
+    }
+    
     .btn:hover {
-      background-color: #e0f7ff;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
     }
-
-    section {
-      background-color: white;
-      margin: 20px 0;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+    .btn-outline:hover {
+      background: var(--white);
+      color: var(--primary-color);
     }
-
-    h2 {
-      margin-bottom: 15px;
-      color: #0077cc;
+    
+    /* Sections */
+    .section {
+      padding: 5rem 0;
     }
-
-    ul {
-      list-style-type: none;
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
     }
-
-    ul li::before {
-      content: '✔️ ';
-      margin-right: 8px;
-    }
-
-    footer {
+    
+    .section-title {
       text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      background-color: #f7f7f7;
-      margin-top: 40px;
-      color: #777;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      position: relative;
     }
-
-    a {
-      color: #0077cc;
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border-radius: 2px;
+    }
+    
+    /* About Section */
+    .about {
+      background: var(--bg-light);
+    }
+    
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    
+    .about-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-light);
+    }
+    
+    .about-image {
+      text-align: center;
+    }
+    
+    .about-image img {
+      width: 300px;
+      height: 300px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: var(--shadow);
+    }
+    
+    /* Skills Section */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .skill-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .skill-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .skill-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .skill-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    
+    .skill-list {
+      list-style: none;
+      text-align: left;
+    }
+    
+    .skill-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 2rem;
+    }
+    
+    .skill-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .skill-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    
+    /* Contact Section */
+    .contact {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: var(--white);
+    }
+    
+    .contact-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    
+    .contact-info {
+      font-size: 1.1rem;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .contact-icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      width: 40px;
+    }
+    
+    .contact-form {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    /* Footer */
+    .footer {
+      background: #1a1a1a;
+      color: var(--white);
+      text-align: center;
+      padding: 2rem 0;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .social-link {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--white);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+      background: var(--primary-color);
+      transform: translateY(-3px);
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.6s ease;
+    }
+    
+    .fade-in-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .mobile-menu {
+        display: flex;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero .subtitle {
+        font-size: 1rem;
+      }
+      
+      .avatar {
+        width: 150px;
+        height: 150px;
+      }
+      
+      .about-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      
+      .about-image img {
+        width: 250px;
+        height: 250px;
+      }
+      
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .contact-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 1rem;
+      }
+      
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .section {
+        padding: 3rem 0;
+      }
+      
+      .skill-card {
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <img src="https://via.placeholder.com/150" alt="Avatar" class="avatar" />
-      <h1>Chung Văn</h1>
-      <p>💻 Backend Developer | ☕ Yêu thích công nghệ & học hỏi không ngừng</p>
-      <a href="https://www.facebook.com/chung.van.27512" target="_blank" class="btn">Kết nối Facebook</a>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="logo">Chung Văn</div>
+      <ul class="nav-links">
+        <li><a href="#home">Trang chủ</a></li>
+        <li><a href="#about">Giới thiệu</a></li>
+        <li><a href="#skills">Kỹ năng</a></li>
+        <li><a href="#contact">Liên hệ</a></li>
+      </ul>
+      <div class="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
-  </header>
+  </nav>
 
-  <section class="about container">
-    <h2>Giới thiệu bản thân</h2>
-    <p>
-      Xin chào! Mình là <strong>Chung Văn</strong>, một lập trình viên backend đam mê công nghệ. Mình đang học và làm việc trong lĩnh vực phần mềm, đặc biệt quan tâm đến Java, Spring Boot, và các công nghệ backend. Ngoài giờ học và làm việc, mình thường tìm hiểu về bảo mật, DevOps và đọc sách phát triển bản thân.
-    </p>
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <img src="https://via.placeholder.com/200x200/667eea/ffffff?text=CV" alt="Chung Văn" class="avatar" />
+      <h1>Chung Văn</h1>
+      <p class="subtitle">💻 Backend Developer | Spring Boot Specialist</p>
+      <p class="description">
+        Chuyên gia phát triển backend với niềm đam mê xây dựng hệ thống web an toàn, hiệu quả và có khả năng mở rộng cao.
+      </p>
+      <div class="cta-buttons">
+        <a href="#contact" class="btn btn-primary">Liên hệ ngay</a>
+        <a href="https://www.facebook.com/chung.van.27512" target="_blank" class="btn btn-outline">Facebook</a>
+      </div>
+    </div>
   </section>
 
-  <section class="skills container">
-    <h2>Kỹ năng</h2>
-    <ul>
-      <li>🌐 Java, Spring Boot, RESTful API</li>
-      <li>🛢️ MySQL, PostgreSQL</li>
-      <li>🔐 JWT, OAuth2</li>
-      <li>⚙️ Git, Docker cơ bản</li>
-    </ul>
+  <!-- About Section -->
+  <section class="about section" id="about">
+    <div class="container">
+      <h2 class="section-title fade-in-up">Giới thiệu bản thân</h2>
+      <div class="about-content">
+        <div class="about-image fade-in-up">
+          <img src="https://via.placeholder.com/300x300/667eea/ffffff?text=Developer" alt="About me" />
+        </div>
+        <div class="about-text fade-in-up">
+          <p>
+            Xin chào! Tôi là <strong>Chung Văn</strong>, một backend developer với hơn 2 năm kinh nghiệm trong việc phát triển các ứng dụng web sử dụng Java Spring Boot.
+          </p>
+          <p>
+            Tôi chuyên sâu về các công nghệ bảo mật như <strong>Spring Security</strong> và <strong>JWT</strong>, có kinh nghiệm thiết kế và xây dựng RESTful APIs hiệu quả. Tôi luôn tìm cách tối ưu hóa hiệu suất và đảm bảo tính bảo mật cho các hệ thống.
+          </p>
+          <p>
+            Mục tiêu của tôi là không ngừng học hỏi và phát triển, đồng thời đóng góp vào các dự án có ý nghĩa để tạo ra giá trị thực sự cho người dùng.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section class="contact container">
-    <h2>Liên hệ</h2>
-    <p>Email: <a href="mailto:your_email@example.com">your_email@example.com</a></p>
-    <p>Facebook: <a href="https://www.facebook.com/chung.van.27512" target="_blank">facebook.com/chung.van.27512</a></p>
+  <!-- Skills Section -->
+  <section class="skills section" id="skills">
+    <div class="container">
+      <h2 class="section-title fade-in-up">Kỹ năng chuyên môn</h2>
+      <div class="skills-grid">
+        <div class="skill-card fade-in-up">
+          <div class="skill-icon">☕</div>
+          <h3>Backend Development</h3>
+          <ul class="skill-list">
+            <li>Java Core & Advanced</li>
+            <li>Spring Boot Framework</li>
+            <li>RESTful API Design</li>
+            <li>Microservices Architecture</li>
+            <li>JPA/Hibernate ORM</li>
+          </ul>
+        </div>
+        
+        <div class="skill-card fade-in-up">
+          <div class="skill-icon">🔐</div>
+          <h3>Security & Authentication</h3>
+          <ul class="skill-list">
+            <li>Spring Security</li>
+            <li>JWT Token Management</li>
+            <li>OAuth 2.0 Implementation</li>
+            <li>API Security Best Practices</li>
+            <li>Role-based Access Control</li>
+          </ul>
+        </div>
+        
+        <div class="skill-card fade-in-up">
+          <div class="skill-icon">🛢️</div>
+          <h3>Database & Tools</h3>
+          <ul class="skill-list">
+            <li>MySQL & PostgreSQL</li>
+            <li>Database Design & Optimization</li>
+            <li>Maven Build Tool</li>
+            <li>Git Version Control</li>
+            <li>Docker Containerization</li>
+          </ul>
+        </div>
+        
+        <div class="skill-card fade-in-up">
+          <div class="skill-icon">🚀</div>
+          <h3>Development Tools</h3>
+          <ul class="skill-list">
+            <li>IntelliJ IDEA</li>
+            <li>Postman API Testing</li>
+            <li>Swagger Documentation</li>
+            <li>Jenkins CI/CD</li>
+            <li>AWS Cloud Services</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <footer>
-    <p>© 2025 Chung Văn. All rights reserved.</p>
+  <!-- Contact Section -->
+  <section class="contact section" id="contact">
+    <div class="container">
+      <h2 class="section-title fade-in-up">Liên hệ với tôi</h2>
+      <div class="contact-content">
+        <div class="contact-info fade-in-up">
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div>
+              <strong>Email:</strong><br>
+              <a href="mailto:chungvan.dev@gmail.com" style="color: white;">chungvan.dev@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📱</div>
+            <div>
+              <strong>Điện thoại:</strong><br>
+              <a href="tel:+84123456789" style="color: white;">+84 123 456 789</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">👤</div>
+            <div>
+              <strong>Facebook:</strong><br>
+              <a href="https://www.facebook.com/chung.van.27512" target="_blank" style="color: white;">facebook.com/chung.van.27512</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <strong>Địa chỉ:</strong><br>
+              Thanh Hóa, Việt Nam
+            </div>
+          </div>
+        </div>
+        
+        <div class="contact-form fade-in-up">
+          <h3>Gửi tin nhắn</h3>
+          <form>
+            <div class="form-group">
+              <label for="name">Họ và tên:</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="subject">Tiêu đề:</label>
+              <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+              <label for="message">Tin nhắn:</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Gửi tin nhắn</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="social-links">
+        <a href="https://www.facebook.com/chung.van.27512" target="_blank" class="social-link">📘</a>
+        <a href="mailto:chungvan.dev@gmail.com" class="social-link">📧</a>
+        <a href="tel:+84123456789" class="social-link">📱</a>
+      </div>
+      <p>&copy; 2025 Chung Văn. Tất cả quyền được bảo lưu.</p>
+    </div>
   </footer>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Fade in animation on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-up').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Skill cards hover effect
+    document.querySelectorAll('.skill-card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-10px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+
+    // Form submission
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(this);
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const subject = formData.get('subject');
+      const message = formData.get('message');
+      
+      // Simple validation
+      if (!name || !email || !subject || !message) {
+        alert('Vui lòng điền đầy đủ thông tin!');
+        return;
+      }
+      
+      // Show success message
+      alert('Cảm ơn bạn đã gửi tin nhắn! Tôi sẽ phản hồi sớm nhất có thể.');
+      
+      // Reset form
+      this.reset();
+    });
+
+    // Add typing effect to hero subtitle
+    const subtitle = document.querySelector('.hero .subtitle');
+    const text = subtitle.textContent;
+    subtitle.textContent = '';
+    
+    let i = 0;
+    const typeWriter = () => {
+      if (i < text.length) {
+        subtitle.textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 100);
+      }
+    };
+    
+    // Start typing effect after page loads
+    window.addEventListener('load', () => {
+      setTimeout(typeWriter, 1000);
+    });
+
+    // Add parallax effect to hero section
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+      }
+    });
+
+    // Add floating animation to avatar
+    const avatar = document.querySelector('.avatar');
+    if (avatar) {
+      let floatDirection = 1;
+      let floatPosition = 0;
+      
+      setInterval(() => {
+        floatPosition += floatDirection;
+        if (floatPosition > 10 || floatPosition < -10) {
+          floatDirection *= -1;
+        }
+        avatar.style.transform = `translateY(${floatPosition}px)`;
+      }, 100);
+    }
+  </script>
 </body>
 </html>
